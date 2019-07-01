@@ -1,0 +1,7 @@
+
+
+alias md="mkdir"
+alias ll="ls -alh"
+alias df="df -Tha --total"
+alias du="du -ach | sort -h"
+alias ps="ps -auxf"
