@@ -1,7 +1,9 @@
+#  .alias for bash platforms
 
-
+alias ll="ls -alGFh --color=auto"
 alias md="mkdir"
-alias ll="ls -alh"
+alias rd="rmdir"
 alias df="df -Tha --total"
 alias du="du -ach | sort -h"
 alias ps="ps -auxf"
+alias gitlog="git log --pretty=oneline --decorate --graph"
