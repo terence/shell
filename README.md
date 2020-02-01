@@ -1,3 +1,4 @@
+# She sells see shells by the sea shore
 # Supports bash / zsh
 # Shell Base Config
 - .alias
