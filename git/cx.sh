@@ -62,10 +62,12 @@ case "$SELECTION" in
     git ls-files | while read f; do git blame -w --line-porcelain -- "$f" | grep -I '^author '; done | sort -f | uniq -ic | sort -n
     echo "==== Object Summary ==============="
     git count-objects -v -H;
-    echo "==== Git Log ====================="
+    echo "==== Git Log ======================"
     git log --pretty=format:'%C(Yellow)%h -%C(red)%d%Creset %s %C(green)%ad(%cr) %C(cyan)<%an>%Creset' --decorate --graph --date=short
     #git log --pretty=oneline --decorate --graph
-    echo "====Remote List=================="
+    echo "==== Branches ====================="
+    git remote -v;
+    echo "====Remote List ==================="
     git remote -v;
     
 #    git pull origin --all;
