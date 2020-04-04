@@ -7,6 +7,7 @@ PWD=pwd
 # DEFAULTS
 REMOTE="ipa"
 FILTER="extensive"
+REPOLIST="repo-migration-list.txt"
 
 
 echo =============================================================
@@ -107,8 +108,7 @@ case "$SELECTION" in
     echo "${p%%/}"
     git clone --mirror https://xxx@bitbucket.org/sourceorg/${p%%/}.git
     echo "git clone --mirror https://xxx@bitbucket.org/sourceorg/${p%%/}.git"
-  done < repo-migration-list.txt
-
+  done < $REPOLIST
   ;;
 
 
@@ -116,9 +116,11 @@ case "$SELECTION" in
   echo "MIRROR PUSH all repos"
   while read p; do
     echo "${p%%/}"
+    cd ${p%%/}.git/;
     git push --mirror https://user@github.com/destinationorg/${p%%/}.git
     echo "git push --mirror https://user@github.com/destinationorg/${p%%/}.git"
-  done < repolist.txt
+    cd ..;
+  done < $REPOLIST
   ;;
 
 
