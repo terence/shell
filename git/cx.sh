@@ -12,8 +12,10 @@ FILTER="extensive"
 echo =============================================================
 echo Hi $USER@$HOSTNAME. You are in $PWD directory.
 echo -------------------------------------------------------------
-echo 01 : PULL ALL repos - source
-echo 02 : PUSH ALL repos - destination
+echo 01 : PULL ALL repos from source + Report Stats
+echo 02 : PUSH ALL repos to destination (single branch)
+echo 03 : MIRROR PULL ALL repos - source
+echo 04 : MIRROR PUSH ALL repos - destination
 echo ----------------------------------------------
 echo 99 : SECURITY SCRUB
 echo Enter [Selection] to continue
@@ -49,9 +51,9 @@ case "$SELECTION" in
 
 "01" )
   # Accept upper or lowercase input.
-  echo PULL ALL repos
-#  for i in `ls | grep a_filter`; do
-  for i in `ls -d */`; do
+  echo Executing PULL ALL repos
+  for i in `ls | grep $FILTER`;
+  do
     echo "--- Pulling $i";
     cd $i;
     echo "==== File Count =================="
@@ -70,7 +72,7 @@ case "$SELECTION" in
     echo "====Remote List ==================="
     git remote -v;
     
-#    git pull origin --all;
+    # git pull origin --all;
     cd ..;
     echo "--- Finished";
   done
@@ -78,8 +80,7 @@ case "$SELECTION" in
 
 
 "02" )
-
-  echo PUSH ALL repos
+  echo "PUSH ALL repos"
   for i in `ls -d */ | grep $FILTER`; do
     echo "--- Pushing ${i%%/}";
     cd $i;
@@ -99,6 +100,33 @@ case "$SELECTION" in
     echo "---Finished";
   done
   ;;
+
+"03" )
+  echo "MIRROR PULL all repos"
+  while read p; do
+    echo "${p%%/}"
+    git clone --mirror https://xxx@bitbucket.org/sourceorg/${p%%/}.git
+    echo "git clone --mirror https://xxx@bitbucket.org/sourceorg/${p%%/}.git"
+  done < repo-migration-list.txt
+
+  ;;
+
+
+"04" )
+  echo "MIRROR PUSH all repos"
+  while read p; do
+    echo "${p%%/}"
+    git push --mirror https://user@github.com/destinationorg/${p%%/}.git
+    echo "git push --mirror https://user@github.com/destinationorg/${p%%/}.git"
+  done < repolist.txt
+  ;;
+
+
+
+
+
+
+
 
 
 "99" )
