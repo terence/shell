@@ -49,16 +49,18 @@ case "$SELECTION" in
 
 "02" )
   echo PUSH ALL repos
-  for i in `ls -d *`; do
-    echo "--- Pushing $i";
+  for i in `ls -d */`; do
+    echo "--- Pushing ${i%%/}";
     cd $i;
-    
+
     # List Remotes
-    git remote -v;
-    
+    # git remote -v;
+
     # Add remotes
-    echo "git remote add ipa https://user@github.enterprise/ORG/$i.git"
-    
+    echo "git remote add ipa https://user@github.enterprise/ORG/${i%%/}.git"
+    git remote remove ipa;
+    git remote add ipa https://user@github.enterprise/ORG/${i%%/}.git
+
     # Push IT
     git push ipa --all
 
