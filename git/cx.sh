@@ -54,15 +54,20 @@ case "$SELECTION" in
   for i in `ls -d */`; do
     echo "--- Pulling $i";
     cd $i;
-    echo "Line Counts=================="
+    echo "==== File Count =================="
+    git ls-files | wc -l;
+    echo "==== File List ===================="
     git ls-files | xargs wc -l;
-    echo "Authors======================"
+    echo "==== Authors ======================"
     git ls-files | while read f; do git blame -w --line-porcelain -- "$f" | grep -I '^author '; done | sort -f | uniq -ic | sort -n
-    echo "Object Summary==============="
+    echo "==== Object Summary ==============="
     git count-objects -v -H;
-    echo "Remote List=================="
+    echo "==== Git Log ====================="
+    git log --pretty=format:'%C(Yellow)%h -%C(red)%d%Creset %s %C(green)%ad(%cr) %C(cyan)<%an>%Creset' --decorate --graph --date=short
+    #git log --pretty=oneline --decorate --graph
+    echo "====Remote List=================="
     git remote -v;
-       
+    
 #    git pull origin --all;
     cd ..;
     echo "--- Finished";
