@@ -7,5 +7,5 @@ alias df="df -Tha --total"
 alias du="du -ach | sort -h"
 alias ps="ps -auxf"
 #alias gitlog="git log --pretty=oneline --decorate --graph"
-alias gitlog="git log --pretty=format:'%C(Yellow)%h %C(green) %ad (%cr) %C(red) %d %Creset %s %C(cyan) <%an> %Creset' --decorate --graph --date=short"
+alias gitlog="git log --pretty=format:'%C(Yellow)%h -%C(red)%d%Creset %s %C(green)%ad(%cr) %C(cyan)<%an>%Creset' --decorate --graph --date=short"
 
