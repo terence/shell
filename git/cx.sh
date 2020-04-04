@@ -4,6 +4,11 @@ clear
 #source ./vars.sh
 PWD=pwd
 
+# DEFAULTS
+REMOTE="ipa"
+FILTER="extensive"
+
+
 echo =============================================================
 echo Hi $USER@$HOSTNAME. You are in $PWD directory.
 echo -------------------------------------------------------------
@@ -22,12 +27,22 @@ else
 fi
 
 if [ -n "$2" ]; then
-  CLUSTER=$2
+  REMOTE=$2
 else
-  read  -n  CLUSTER
+  read  -n  REMOTE
 fi
+
+if [ -n "$3" ]; then
+  FILTER=$3
+else
+  read  -n  FILTER
+fi
+
+
 echo Your selection is : $SELECTION.
-echo Your cluster is : $CLUSTER.
+echo Your remote is : $REMOTE.
+echo Your filter is : $FILTER.
+
 
 case "$SELECTION" in
 # Note variable is quoted.
@@ -48,8 +63,9 @@ case "$SELECTION" in
 
 
 "02" )
+
   echo PUSH ALL repos
-  for i in `ls -d */`; do
+  for i in `ls -d */ | grep $FILTER`; do
     echo "--- Pushing ${i%%/}";
     cd $i;
 
@@ -57,12 +73,12 @@ case "$SELECTION" in
     # git remote -v;
 
     # Add remotes
-    echo "git remote add ipa https://user@github.enterprise/ORG/${i%%/}.git"
-    git remote remove ipa;
-    git remote add ipa https://user@github.enterprise/ORG/${i%%/}.git
+    echo "git remote add $REMOTE https://user@github.enterprise/ORG/${i%%/}.git"
+    git remote remove $REMOTE;
+    git remote add $REMOTE https://user@github.enterprise/ORG/${i%%/}.git
 
     # Push IT
-    git push ipa --all
+    git push $REMOTE --all
 
     cd ..;
     echo "---Finished";
