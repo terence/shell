@@ -18,7 +18,6 @@ echo 02 : PUSH ALL repos to destination (single branch)
 echo 03 : MIRROR PULL ALL repos - source
 echo 04 : MIRROR PUSH ALL repos - destination
 echo ----------------------------------------------
-echo 99 : SECURITY SCRUB
 echo Enter [Selection] to continue
 echo =============================================================
 
@@ -102,6 +101,7 @@ case "$SELECTION" in
   done
   ;;
 
+
 "03" )
   echo "MIRROR PULL all repos"
   while read p; do
@@ -124,31 +124,7 @@ case "$SELECTION" in
   ;;
 
 
-
-
-
-
-
-
-
-"99" )
-  echo SECURITY SCRUB
-  # chmod 700 ~/.ssh directory
-  # chmod 600 authorized_keys (if it exists on client machines)
-  # chmod 600 id_*
-  # chmod 644 *.pub
-  cd ~/.ssh/
-  chmod 700 ~/.ssh
-  chmod 600 id*
-  chmod 644 id*.pub
-  if [ -e ~/.ssh/authorized_keys ];then
-    chmod 600 ~/.ssh/authorized_keys
-  fi
-  ;;
-
-  # Attempt to cater for ESC
-
-
+# Attempt to cater for ESC
 "\x1B" )
   echo ESC1
   exit 0
