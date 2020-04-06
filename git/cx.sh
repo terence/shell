@@ -68,7 +68,7 @@ case "$SELECTION" in
     git log --pretty=format:'%C(Yellow)%h -%C(red)%d%Creset %s %C(green)%ad(%cr) %C(cyan)<%an>%Creset' --decorate --graph --date=short
     #git log --pretty=oneline --decorate --graph
     echo "==== Branches ====================="
-    git remote -v;
+    git branch -a;
     echo "====Remote List ==================="
     git remote -v;
     
