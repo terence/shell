@@ -52,37 +52,40 @@ case "$SELECTION" in
 "01" )
   # Accept upper or lowercase input.
   echo Executing PULL ALL repos
-  for i in `ls | grep $FILTER`;
-  do
-    echo "--- Pulling $i";
-    cd $i;
-    echo "==== File Count =================="
+#  for i in `ls | grep $FILTER`; do
+
+  while read p; do
+    echo "==== Pulling ${p%%/}";
+    cd $p;
+    echo "---- File Count -------------------"
     git ls-files | wc -l;
-    echo "==== File List ===================="
+    echo "---- File List --------------------"
     git ls-files | xargs wc -l;
-    echo "==== Authors ======================"
+    echo "---- Authors ----------------------"
     git ls-files | while read f; do git blame -w --line-porcelain -- "$f" | grep -I '^author '; done | sort -f | uniq -ic | sort -n
-    echo "==== Object Summary ==============="
+    echo "---- Object Summary ---------------"
     git count-objects -v -H;
-    echo "==== Git Log ======================"
+    echo "---- Git Log ----------------------"
     git log --pretty=format:'%C(Yellow)%h -%C(red)%d%Creset %s %C(green)%ad(%cr) %C(cyan)<%an>%Creset' --decorate --graph --date=short
     #git log --pretty=oneline --decorate --graph
-    echo "==== Branches ====================="
+    echo "---- Branches ---------------------"
     git branch -a;
-    echo "====Remote List ==================="
+    echo "---- Remote List ------------------"
     git remote -v;
     
     # git pull origin --all;
     cd ..;
-    echo "--- Finished";
-  done
+    echo "==== Finished PULL";
+  done < $REPOLIST
   ;;
 
 
 "02" )
   echo "PUSH ALL repos"
-  for i in `ls -d */ | grep $FILTER`; do
-    echo "--- Pushing ${i%%/}";
+#  for i in `ls -d */ | grep $FILTER`; do
+
+  while read p; do
+    echo "==== PUSHing ${p%%/}";
     cd $i;
 
     # List Remotes
@@ -97,9 +100,9 @@ case "$SELECTION" in
     git push $REMOTE --all
 
     cd ..;
-    echo "---Finished";
-  done
-  ;;
+    echo ==== Finished PUSH";
+    done < $REPOLIST
+    ;;
 
 
 "03" )
