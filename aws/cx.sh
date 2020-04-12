@@ -51,7 +51,7 @@ case "$SELECTION" in
 
 "03" )
   echo "===== AWS Assume Role"
-  aws sts assume-role --role-arn "arn:aws:iam::xxxxxxxxx:role/AWSAdmin"
+  aws sts asaws sts assume-role --role-arn "arn:aws:iam::xxxxxxxxxxxx:role/AWSAdmin" --role-session-name AWSCLI-Session
   ;;
     
 "04" )
