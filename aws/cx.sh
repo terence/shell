@@ -46,7 +46,10 @@ case "$SELECTION" in
 
 "02" )
   echo "===== AWS S3 List"
-  aws s3 list
+  aws s3 ls
+  #aws s3 ls s3://bucketname
+  #aws s3 cp 
+  # aws s3 sync local s3://remote
   ;;
 
 "03" )
