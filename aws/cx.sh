@@ -11,9 +11,10 @@ REMOTE="ipa"
 echo =============================================================
 echo Hi $USER@$HOSTNAME. You are in $PWD directory.
 echo -------------------------------------------------------------
-echo 01 : AWS S3 List
-echo 02 : AWS Assume Role
-echo 03 : AWS Cloudwatch Logdump
+echo 01 : AWS Configure
+echo 02 : AWS S3 List
+echo 03 : AWS Assume Role
+echo 04 : AWS Organisation
 echo ----------------------------------------------
 echo Enter [Selection] to continue
 echo =============================================================
@@ -39,15 +40,21 @@ case "$SELECTION" in
 # Note variable is quoted.
 
 "01" )
-  echo "===== AWS S3 Listing"
+  echo "===== AWS Configure - Setup"
+  aws configure
   ;;
-
 
 "02" )
+  echo "===== AWS S3 List"
+  aws s3 list
+  ;;
+
+"03" )
   echo "===== AWS Assume Role"
+  aws sts assume-role --role-arn "arn:aws:iam::xxxxxxxxx:role/AWSAdmin"
   ;;
     
-"03" )
+"04" )
   echo "===== AWS Cloudwatch Logdump"
   ;;
 
