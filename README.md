@@ -8,8 +8,11 @@ Supports bash / zsh
 - .zshrc
 - .vimrc
 
-#
+# SSH Configs
 - .ssh/known_hosts
 - .ssh/config
 
+# Base Cloud Automation Setup
+- Contain to connectivity, inspection, and monitoring.
+- Defer to specific cloud-scripts repos for specifics
 
