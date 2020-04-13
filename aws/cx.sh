@@ -5,8 +5,9 @@ clear
 PWD=pwd
 
 # DEFAULTS
-REMOTE="ipa"
-
+PROFILE="ipadev"
+REGION="ap-southeast2"
+OUTPUT="json"
 
 echo =============================================================
 echo Hi $USER@$HOSTNAME. You are in $PWD directory.
@@ -14,7 +15,8 @@ echo -------------------------------------------------------------
 echo 01 : AWS Configure
 echo 02 : AWS S3 List
 echo 03 : AWS Assume Role
-echo 04 : AWS Organisation
+echo 04 : AWS IAM List Users
+echo 05 : AWS IAM Organisation
 echo ----------------------------------------------
 echo Enter [Selection] to continue
 echo =============================================================
@@ -27,9 +29,9 @@ else
 fi
 
 if [ -n "$2" ]; then
-  REMOTE=$2
+  PROFILE=$2
 else
-  read  -n  REMOTE
+  read  -n  PROFILE
 fi
 
 echo Your selection is : $SELECTION.
@@ -54,11 +56,13 @@ case "$SELECTION" in
 
 "03" )
   echo "===== AWS Assume Role"
-  aws sts asaws sts assume-role --role-arn "arn:aws:iam::xxxxxxxxxxxx:role/AWSAdmin" --role-session-name AWSCLI-Session
+  # aws sts assume-role --role-arn "arn:aws:iam::xxxxxxxxxxxx:role/AWSAdmin" --role-session-name AWSCLI-Session
+  # aws sts get-caller-identity --profile ipadev 
   ;;
     
 "04" )
-  echo "===== AWS Cloudwatch Logdump"
+  echo "===== AWS IAM List Users"
+  aws iam list-users --profile $PROFILE --output $OUTPUT
   ;;
 
 
