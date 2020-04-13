@@ -1,3 +1,4 @@
+w
 # AWS Scripts Command-line Assistant
 #================================================================
 clear
@@ -6,7 +7,7 @@ PWD=pwd
 
 # DEFAULTS
 PROFILE="ipadev"
-REGION="ap-southeast2"
+REGION="ap-southeast-2"
 OUTPUT="json"
 
 echo =============================================================
@@ -17,6 +18,9 @@ echo 02 : AWS S3 List
 echo 03 : AWS Assume Role
 echo 04 : AWS IAM List Users
 echo 05 : AWS IAM Organisation
+echo 06 : AWS ec2 List Instances
+echo 07 : AWS ec2 List Instnace Details
+echo 08 : AWS IAM Organisation
 echo ----------------------------------------------
 echo Enter [Selection] to continue
 echo =============================================================
@@ -47,8 +51,11 @@ case "$SELECTION" in
   ;;
 
 "02" )
-  echo "===== AWS S3 List"
-  aws s3 ls
+  echo "===== AWS S3 List" $PROFILE
+  aws s3 ls --profile $PROFILE
+  echo "Count:"
+  aws s3 ls --profile $PROFILE | wc -l
+
   #aws s3 ls s3://bucketname
   #aws s3 cp 
   # aws s3 sync local s3://remote
@@ -62,8 +69,62 @@ case "$SELECTION" in
     
 "04" )
   echo "===== AWS IAM List Users"
-  aws iam list-users --profile $PROFILE --output $OUTPUT
+  aws iam list-users \
+    --profile $PROFILE \
+    --output $OUTPUT
   ;;
+
+"05" )
+  echo "===== AWS ec2 List Regions"
+  aws ec2 describe-regions \
+    --query 'Regions[].RegionName' \
+    --output $OUTPUT \
+    --profile $PROFILE;
+  ;;
+
+"06" )
+  echo "===== AWS ec2 List Instances"
+  aws ec2 describe-instances \
+    --filter Name=tag-key,Values=Name \
+    --query 'Reservations[*].Instances[*].{Instance:InstanceId,AZ:Placement.AvailabilityZone,Name:Tags[?Key==`Name`]|[0].Value}' \
+    --output table \
+    --profile $PROFILE;
+  ;;
+
+"07" )
+  echo "===== AWS ec2 List Instances Detailed"
+
+  aws ec2 describe-instances \
+    --profile $PROFILE \
+#    --output $OUTPUT \
+    --output table \
+    --region $REGION \
+    --query "Reservations[*].Instances[*].{
+        Instance:InstanceId,
+        Type:InstanceType,
+        AZ:Placement.AvailabilityZone,
+        KeyName:KeyName,
+        Name:Tags[?Key==\`Name\`]|[0].Value,
+        Project:Tags[?Key==\`project\`]|[0].Value,
+        IP:PublicIpAddress,
+        State:State.Name,
+        CPUcores:CpuOptions.CoreCount,
+        CPUThreads:CpuOptions.ThreadsPerCore
+      }" 
+  ;;
+
+"08" )
+  echo "===== AWS ec2 List Images"
+  aws ec2 describe-images \
+    --owners self \
+    --query 'reverse(sort_by(Images,&CreationDate))[:5].{id:ImageId,date:CreationDate}' \
+    --profile $PROFILE \
+    --output $OUTPUT
+  ;;
+
+
+
+
 
 
 
