@@ -1,0 +1,9 @@
+Resources:
+  S3Bucket:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      AccessControl: Private
+      BucketName: my-private-s3-bucket-dev
+      VersioningConfiguration:
+        Status: Enabled
+    DeletionPolicy: Retain
