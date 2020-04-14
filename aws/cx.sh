@@ -18,7 +18,7 @@ echo Hi $USER@$HOSTNAME. You are in $PWD directory.
 echo -------------------------------------------------------------
 echo 001 : AWS Configure
 echo 002 : AWS S3 List
-echo 003 : AWS Assume Role
+echo 003 : AWS STS Assume Role
 echo ----------------------------------------------
 echo 010 : AWS IAM List Users
 echo 011 : AWS IAM List Roles
@@ -43,22 +43,32 @@ echo 060 : AWS Lambda Account Settings
 echo 061 : AWS Lambda List Functions
 echo 062 : AWS Lambda List Layers
 echo ----------------------------------------------
-echo 070 : AWS Dynamo xxx
-echo 071 : AWS Dynamo xxx
-echo 072 : AWS Dynamo xxx
+echo 070 : AWS Dynamo list-tables
+echo 071 : AWS Dynamo create-table
+echo 072 : AWS Dynamo delete-table
 echo 073 : AWS Dynamo xxx
 echo ----------------------------------------------
-echo 080 : AWS EMR list-cluster
-echo 081 : AWS EMR list-instances
-echo 082 : AWS EMR list-steps
-echo 083 : AWS EMR describe-cluster
-echo 083 : AWS EMR describe-step
+echo 080 : AWS STS xxx
+echo 081 : AWS STS xxx
+echo ----------------------------------------------
+echo 090 : AWS xxx  xxx
+echo 091 : AWS xxx  xxx
+echo ----------------------------------------------
+echo 100 : AWS EMR list-cluster
+echo 101 : AWS EMR list-instances
+echo 102 : AWS EMR list-steps
+echo 103 : AWS EMR describe-cluster
+echo 103 : AWS EMR describe-step
 echo ----------------------------------------------
 echo 110 : AWS Cloudwatch List Metrics
 echo 111 : AWS Cloudwatch List Dashboards
 echo 112 : AWS Cloudwatch Describe Alarms
 echo ----------------------------------------------
 echo 200 : AWS cloudfront list-distributions
+echo ----------------------------------------------
+echo 900 : AWS cloudformation list-stacks completed
+echo 901 : AWS cloudformation create-stack
+echo 902 : AWS cloudformation delete-stack
 echo ----------------------------------------------
 echo Enter [Selection] to continue
 echo =============================================================
@@ -72,8 +82,6 @@ fi
 
 if [ -n "$2" ]; then
   PROFILE=$2
-else
-  read  -n  PROFILE
 fi
 
 echo Your selection is : $SELECTION.
@@ -273,14 +281,52 @@ case "$SELECTION" in
     --output $OUTPUT
   ;;
 
+
 "070" )
-  echo "===== AWS Dynamo xxx:" $PROFILE
-  aws dynamo \
+  echo "===== AWS Dynamo list-tables:" $PROFILE
+  aws dynamodb list-tables \
     --profile $PROFILE \
     --output $OUTPUT
   ;;
 
+
+"071" )
+  echo "===== AWS Dynamo create-table:" $PROFILE
+  aws dynamodb create-table \
+    --table-name MusicCollection \
+    --attribute-definitions AttributeName=Artist,AttributeType=S AttributeName=SongTitle,AttributeType=S \
+    --key-schema AttributeName=Artist,KeyType=HASH AttributeName=SongTitle,KeyType=RANGE \
+    --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5 \
+    --profile $PROFILE \
+    --output $OUTPUT
+  ;;
+
+
+"072" )
+  echo "===== AWS Dynamo delete-table:" $PROFILE
+  aws dynamodb delete-table \
+    --table-name MusicCollection \
+    --profile $PROFILE \
+    --output $OUTPUT
+  ;;
+
+
 "080" )
+  echo "===== AWS STS get-session-token:" $PROFILE
+  aws sts xxx \
+    --profile $PROFILE \
+    --output $OUTPUT
+  ;;
+
+"081" )
+  echo "===== AWS STS xxx:" $PROFILE
+  aws sts xxx \
+    --profile $PROFILE \
+    --output $OUTPUT
+  ;;
+
+
+"100" )
   echo "===== AWS EMR list-cluster:" $PROFILE
   aws emr list-clusters \
     --active \
@@ -289,7 +335,7 @@ case "$SELECTION" in
   ;;
 
 
-"081" )
+"101" )
   echo "===== AWS EMR list-instances:" $PROFILE
   aws emr list-instances \
     --cluster-id $EMR_CLUSTER_ID \
@@ -298,7 +344,7 @@ case "$SELECTION" in
   ;;
 
 
-"082" )
+"102" )
   echo "===== AWS EMR list-steps:" $PROFILE
   aws emr list-steps \
     --cluster-id $EMR_CLUSTER_ID \
@@ -307,7 +353,7 @@ case "$SELECTION" in
   ;;
 
 
-"083" )
+"103" )
   echo "===== AWS EMR describe-cluster:" $PROFILE
   aws emr describe-cluster \
     --cluster-id $EMR_CLUSTER_ID \
@@ -316,7 +362,7 @@ case "$SELECTION" in
   ;;
 
 
-"084" )
+"104" )
   echo "===== AWS EMR describe-steps:" $PROFILE
   aws emr describe-steps \
     --cluster-id $EMR_CLUSTER_ID \
@@ -358,6 +404,35 @@ case "$SELECTION" in
   ;;
 
 
+"900" )
+  echo "===== AWS cloudformation list-stacks - completed:" $PROFILE
+  aws cloudformation list-stacks \
+    --stack-status-filter CREATE_COMPLETE \
+    --profile $PROFILE \
+    --output table
+  ;;
+
+
+"901" )
+  echo "===== AWS cloudformation create-stack:" $PROFILE
+  aws cloudformation create-stack \
+    --stack-name terencetest \
+    --template-body file://cf/s3_bucket.yaml \
+    --profile $PROFILE \
+    --output table
+  ;;
+
+
+"902" )
+  echo "===== AWS cloudformation delete-stack:" $PROFILE
+  aws cloudformation delete-stack \
+    --stack-name terencetest \
+    --profile $PROFILE \
+    --output table
+  ;;
+
+
+
 # Attempt to cater for ESC
 "\x1B" )
   echo ESC1
@@ -378,5 +453,6 @@ case "$SELECTION" in
   echo "Not a recognized option."
   ;;
 esac
+
 
 
