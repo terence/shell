@@ -16,41 +16,49 @@ EMR_CLUSTER_ID="xxx"
 echo =============================================================
 echo Hi $USER@$HOSTNAME. You are in $PWD directory.
 echo -------------------------------------------------------------
-echo 01 : AWS Configure
-echo 02 : AWS S3 List
-echo 03 : AWS Assume Role
+echo 001 : AWS Configure
+echo 002 : AWS S3 List
+echo 003 : AWS Assume Role
 echo ----------------------------------------------
-echo 10 : AWS IAM List Users
-echo 11 : AWS IAM List Roles
-echo 12 : AWS IAM List Groups
-echo 13 : AWS IAM List Policies
-echo 14 : AWS IAM List access-keys
+echo 010 : AWS IAM List Users
+echo 011 : AWS IAM List Roles
+echo 012 : AWS IAM List Groups
+echo 013 : AWS IAM List Policies
+echo 014 : AWS IAM List access-keys
 echo ----------------------------------------------
-echo 20 : AWS ORGANIZATIONS List Accounts
-echo 21 : AWS ORGANISATIONS List Roots
+echo 020 : AWS ORGANIZATIONS List Accounts
+echo 021 : AWS ORGANISATIONS List Roots
 echo ----------------------------------------------
-echo 30 : AWS EC2 Describe Regions-List
-echo 31 : AWS EC2 Describe Instances
-echo 32 : AWS EC2 Describe Instances Details
-echo 33 : AWS EC2 Describe Images
-echo 34 : AWS EC2 Describe Security Groups
+echo 030 : AWS EC2 Describe Regions-List
+echo 031 : AWS EC2 Describe Instances
+echo 032 : AWS EC2 Describe Instances Details
+echo 033 : AWS EC2 Describe Images
+echo 034 : AWS EC2 Describe Security Groups
 echo ----------------------------------------------
-echo 40 : AWS EC2 Describe NAT Gateways
-echo 41 : AWS EC2 Describe VPCs
-echo 42 : AWS EC2 Describe Transit Gateways
+echo 040 : AWS EC2 Describe NAT Gateways
+echo 041 : AWS EC2 Describe VPCs
+echo 042 : AWS EC2 Describe Transit Gateways
 echo ----------------------------------------------
-echo 60 : AWS Lambda Account Settings
-echo 61 : AWS Lambda List Functions
-echo 62 : AWS Lambda List Layers
+echo 060 : AWS Lambda Account Settings
+echo 061 : AWS Lambda List Functions
+echo 062 : AWS Lambda List Layers
 echo ----------------------------------------------
-echo 70 : AWS Cloudwatch 
-echo 71 : AWS Cloudwatch
+echo 070 : AWS Dynamo xxx
+echo 071 : AWS Dynamo xxx
+echo 072 : AWS Dynamo xxx
+echo 073 : AWS Dynamo xxx
 echo ----------------------------------------------
-echo 80 : AWS EMR list-cluster
-echo 81 : AWS EMR list-instances
-echo 82 : AWS EMR list-steps
-echo 83 : AWS EMR describe-cluster
-echo 83 : AWS EMR describe-step
+echo 080 : AWS EMR list-cluster
+echo 081 : AWS EMR list-instances
+echo 082 : AWS EMR list-steps
+echo 083 : AWS EMR describe-cluster
+echo 083 : AWS EMR describe-step
+echo ----------------------------------------------
+echo 110 : AWS Cloudwatch List Metrics
+echo 111 : AWS Cloudwatch List Dashboards
+echo 112 : AWS Cloudwatch Describe Alarms
+echo ----------------------------------------------
+echo 200 : AWS cloudfront list-distributions
 echo ----------------------------------------------
 echo Enter [Selection] to continue
 echo =============================================================
@@ -59,7 +67,7 @@ echo =============================================================
 if [ -n "$1" ]; then
   SELECTION=$1
 else
-  read  -n 2 SELECTION
+  read  -n 3 SELECTION
 fi
 
 if [ -n "$2" ]; then
@@ -73,13 +81,13 @@ echo Your profile is : $PROFILE.
 
 
 case "$SELECTION" in
-"01" )
+"001" )
   echo "===== AWS Configure - Setup"
   aws configure
   ;;
 
 
-"02" )
+"002" )
   echo "===== AWS S3 List:" $PROFILE
   aws s3 ls --profile $PROFILE
   echo "Count:"
@@ -91,14 +99,14 @@ case "$SELECTION" in
   ;;
 
 
-"03" )
+"003" )
   echo "===== AWS Assume Role:" $PROFILE
   # aws sts assume-role --role-arn "arn:aws:iam::xxxxxxxxxxxx:role/AWSAdmin" --role-session-name AWSCLI-Session
   # aws sts get-caller-identity --profile ipadev 
   ;;
 
     
-"10" )
+"010" )
   echo "===== AWS IAM List Users:" $PROFILE
   aws iam list-users \
     --profile $PROFILE \
@@ -106,7 +114,7 @@ case "$SELECTION" in
   ;;
 
 
-"11" )
+"011" )
   echo "===== AWS IAM List Roles:" $PROFILE
   aws iam list-roles \
     --profile $PROFILE \
@@ -114,7 +122,7 @@ case "$SELECTION" in
   ;;
 
 
-"12" )
+"012" )
   echo "===== AWS IAM List Groups:" $PROFILE
   aws iam list-groups \
     --profile $PROFILE \
@@ -122,7 +130,7 @@ case "$SELECTION" in
   ;;
 
 
-"13" )
+"013" )
   echo "===== AWS IAM List Policies:" $PROFILE
   aws iam list-policies \
     --profile $PROFILE \
@@ -130,7 +138,7 @@ case "$SELECTION" in
   ;;
 
 
-"14" )
+"014" )
   echo "===== AWS IAM List Access Keys:" $PROFILE
   aws iam list-access-keys \
     --user-name terence.chia
@@ -139,7 +147,7 @@ case "$SELECTION" in
   ;;
 
 
-"20" )
+"020" )
   echo "===== AWS ORGANIZATIONS  List Accounts:" $PROFILE
   aws organizations list-accounts \
     --profile $PROFILE \
@@ -147,7 +155,7 @@ case "$SELECTION" in
   ;;
 
 
-"21" )
+"021" )
   echo "===== AWS ORGANIZATIONS  List Roots:" $PROFILE
   aws organizations list-roots \
     --profile $PROFILE \
@@ -155,8 +163,8 @@ case "$SELECTION" in
   ;;
 
 
-"30" )
-  echo "===== AWS ec2 List Regions"
+"030" )
+  echo "===== AWS ec2 List Regions:" $PROFILE
   aws ec2 describe-regions \
     --query 'Regions[].RegionName' \
     --output $OUTPUT \
@@ -164,8 +172,8 @@ case "$SELECTION" in
   ;;
 
 
-"31" )
-  echo "===== AWS ec2 List Instances"
+"031" )
+  echo "===== AWS ec2 List Instances:" $PROFILE
   aws ec2 describe-instances \
     --filter Name=tag-key,Values=Name \
     --query 'Reservations[*].Instances[*].{
@@ -177,8 +185,8 @@ case "$SELECTION" in
     --profile $PROFILE;
   ;;
 
-"32" )
-  echo "===== AWS ec2 List Instances Detailed"
+"032" )
+  echo "===== AWS ec2 List Instances Detailed:" $PROFILE
   aws ec2 describe-instances \
     --profile $PROFILE \
     --output table \
@@ -199,7 +207,7 @@ case "$SELECTION" in
   ;;
 
 
-"33" )
+"033" )
   echo "===== AWS EC2 List Images" $PROFILE
   aws ec2 describe-images \
     --owners self \
@@ -209,82 +217,71 @@ case "$SELECTION" in
   ;;
 
 
-"34" )
-  echo "===== AWS EC2 Describe Security Groups" $PROFILE
+"034" )
+  echo "===== AWS EC2 Describe Security Groups:" $PROFILE
   aws ec2 describe-security-groups \
     --profile $PROFILE \
     --output $OUTPUT
   ;;
 
 
-"40" )
-  echo "===== AWS EC2 Describe NAT Gateways" $PROFILE
+"040" )
+  echo "===== AWS EC2 Describe NAT Gateways:" $PROFILE
   aws ec2 describe-nat-gateways \
     --profile $PROFILE \
     --output $OUTPUT
   ;;
 
 
-"41" )
-  echo "===== AWS EC2 Describe VPCs" $PROFILE
+"041" )
+  echo "===== AWS EC2 Describe VPCs:" $PROFILE
   aws ec2 describe-vpcs \
     --profile $PROFILE \
-    --output $OUTPUT
+    --output table
   ;;
 
 
 
-"42" )
-  echo "===== AWS EC2 Describe Transit Gateways" $PROFILE
+"042" )
+  echo "===== AWS EC2 Describe Transit Gateways:" $PROFILE
   aws ec2 describe-transit-gateways \
     --profile $PROFILE \
     --output $OUTPUT
   ;;
 
 
-"60" )
-  echo "===== AWS Lambda Get Account Settings"
+"060" )
+  echo "===== AWS Lambda Get Account Settings:" $PROFILE
   aws lambda get-account-settings \
     --profile $PROFILE \
     --output $OUTPUT
   ;;
 
 
-"61" )
-  echo "===== AWS Lambda List Functions"
+"061" )
+  echo "===== AWS Lambda List Functions:" $PROFILE
   aws lambda list-functions \
     --profile $PROFILE \
     --output $OUTPUT
   ;;
 
 
-"62" )
-  echo "===== AWS Lambda List Layers"
+"062" )
+  echo "===== AWS Lambda List Layers:" $PROFILE
   aws lambda list-layers \
     --profile $PROFILE \
     --output $OUTPUT
   ;;
 
-
-"70" )
-  echo "===== AWS CLOUDWATCH List Metrics:" $PROFILE
-  aws cloudwatch list-metrics \
-    --namespace "AWS/Lambda" \
+"070" )
+  echo "===== AWS Dynamo xxx:" $PROFILE
+  aws dynamo \
     --profile $PROFILE \
-    --output text
+    --output $OUTPUT
   ;;
 
-
-"71" )
-  echo "===== AWS CLOUDWATCH List Dashboards:" $PROFILE
-  aws cloudwatch list-dashboard \
-    --profile $PROFILE \
-    --output table
-  ;;
-
-
-"80" )
-  echo "===== AWS EMR list-cluster"
+"080" )
+  echo "===== AWS EMR list-cluster:" $PROFILE
   aws emr list-clusters \
     --active \
     --profile $PROFILE \
@@ -292,8 +289,8 @@ case "$SELECTION" in
   ;;
 
 
-"81" )
-  echo "===== AWS EMR list-instances"
+"081" )
+  echo "===== AWS EMR list-instances:" $PROFILE
   aws emr list-instances \
     --cluster-id $EMR_CLUSTER_ID \
     --profile $PROFILE \
@@ -301,7 +298,7 @@ case "$SELECTION" in
   ;;
 
 
-"82" )
+"082" )
   echo "===== AWS EMR list-steps:" $PROFILE
   aws emr list-steps \
     --cluster-id $EMR_CLUSTER_ID \
@@ -310,8 +307,8 @@ case "$SELECTION" in
   ;;
 
 
-"83" )
-  echo "===== AWS EMR describe-cluster"
+"083" )
+  echo "===== AWS EMR describe-cluster:" $PROFILE
   aws emr describe-cluster \
     --cluster-id $EMR_CLUSTER_ID \
     --profile $PROFILE \
@@ -319,13 +316,47 @@ case "$SELECTION" in
   ;;
 
 
-"84" )
-  echo "===== AWS EMR describe-steps"
+"084" )
+  echo "===== AWS EMR describe-steps:" $PROFILE
   aws emr describe-steps \
     --cluster-id $EMR_CLUSTER_ID \
     --profile $PROFILE \
     --output table
   ;;
+
+
+"110" )
+  echo "===== AWS CLOUDWATCH List Metrics:" $PROFILE
+  aws cloudwatch list-metrics \
+    --namespace "AWS/Lambda" \
+    --profile $PROFILE \
+    --output text
+  ;;
+
+
+"111" )
+  echo "===== AWS CLOUDWATCH List Dashboards:" $PROFILE
+  aws cloudwatch list-dashboards \
+    --profile $PROFILE \
+    --output table
+  ;;
+
+
+"112" )
+  echo "===== AWS CLOUDWATCH Describe Alarms:" $PROFILE
+  aws cloudwatch describe-alarms \
+    --profile $PROFILE \
+    --output table
+  ;;
+
+
+"200" )
+  echo "===== AWS cloudfront list-distributions:" $PROFILE
+  aws cloudfront list-distributions \
+    --profile $PROFILE \
+    --output table
+  ;;
+
 
 # Attempt to cater for ESC
 "\x1B" )
