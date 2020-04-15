@@ -51,8 +51,8 @@ echo ----------------------------------------------
 echo 080 : AWS STS xxx
 echo 081 : AWS STS xxx
 echo ----------------------------------------------
-echo 090 : AWS xxx  xxx
-echo 091 : AWS xxx  xxx
+echo 090 : AWS SES  send-email
+echo 091 : AWS SES  xxx
 echo ----------------------------------------------
 echo 100 : AWS EMR list-cluster
 echo 101 : AWS EMR list-instances
@@ -321,6 +321,19 @@ case "$SELECTION" in
 "081" )
   echo "===== AWS STS xxx:" $PROFILE
   aws sts xxx \
+    --profile $PROFILE \
+    --output $OUTPUT
+  ;;
+
+
+
+"090" )
+  echo "===== AWS SES send-email:" $PROFILE
+  echo "===== Make sure source and destination emails are verified"
+  aws ses send-email \
+    --from terence.chia@capgemini.com \
+    --destination file://ses/destination.json \
+    --message file://ses/message.json \
     --profile $PROFILE \
     --output $OUTPUT
   ;;
