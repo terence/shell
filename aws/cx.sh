@@ -1,4 +1,3 @@
-w
 # AWS Scripts Command-line Assistant
 #================================================================
 clear
@@ -35,36 +34,50 @@ echo 032 : AWS EC2 Describe Instances Details
 echo 033 : AWS EC2 Describe Images
 echo 034 : AWS EC2 Describe Security Groups
 echo ----------------------------------------------
-echo 040 : AWS EC2 Describe NAT Gateways
-echo 041 : AWS EC2 Describe VPCs
-echo 042 : AWS EC2 Describe Transit Gateways
-echo ----------------------------------------------
-echo 060 : AWS Lambda Account Settings
-echo 061 : AWS Lambda List Functions
-echo 062 : AWS Lambda List Layers
-echo ----------------------------------------------
 echo 070 : AWS Dynamo list-tables
 echo 071 : AWS Dynamo create-table
 echo 072 : AWS Dynamo delete-table
-echo 073 : AWS Dynamo xxx
+echo 073 : AWS Dynamo create-backup
 echo ----------------------------------------------
 echo 080 : AWS STS xxx
 echo 081 : AWS STS xxx
 echo ----------------------------------------------
-echo 090 : AWS SES  send-email
-echo 091 : AWS SES  xxx
+echo 090 : AWS SES send-email
+echo 091 : AWS SES xxx
 echo ----------------------------------------------
-echo 100 : AWS EMR list-cluster
-echo 101 : AWS EMR list-instances
-echo 102 : AWS EMR list-steps
-echo 103 : AWS EMR describe-cluster
-echo 103 : AWS EMR describe-step
+echo 100 : AWS Lambda Account Settings
+echo 101 : AWS Lambda List Functions
+echo 102 : AWS Lambda List Layers
 echo ----------------------------------------------
-echo 110 : AWS Cloudwatch List Metrics
-echo 111 : AWS Cloudwatch List Dashboards
-echo 112 : AWS Cloudwatch Describe Alarms
+echo 150 : AWS APIGATEWAY get-rest-apis
+echo 151 : AWS APIGATEWAY xxx
+echo 152 : AWS APIGATEWAY xxx
 echo ----------------------------------------------
-echo 200 : AWS cloudfront list-distributions
+echo 150 : AWS DataPipeline list-pipelines
+echo 151 : AWS DataPipeline xxx
+echo 152 : AWS DataPipeline xxx
+echo ----------------------------------------------
+echo 400 : AWS EMR list-cluster
+echo 401 : AWS EMR list-instances
+echo 402 : AWS EMR list-steps
+echo 403 : AWS EMR describe-cluster
+echo 403 : AWS EMR describe-step
+echo ----------------------------------------------
+echo 500 : AWS EC2 describe-vpcs
+echo 501 : AWS EC2 describe-subnets
+echo 502 : AWS EC2 describe-vpn-gateways
+echo 503 : AWS EC2 describe-nat-gateways
+echo 504 : AWS EC2 describe-transit-gateways
+echo 505 : AWS EC2 describe-route-tables
+echo 506 : AWS EC2 xxx
+echo ----------------------------------------------
+echo 610 : AWS Cloudwatch List Metrics
+echo 611 : AWS Cloudwatch List Dashboards
+echo 612 : AWS Cloudwatch Describe Alarms
+echo ----------------------------------------------
+echo 630 : AWS CloudTrail xxx
+echo ----------------------------------------------
+echo 700 : AWS cloudfront list-distributions
 echo ----------------------------------------------
 echo 900 : AWS cloudformation list-stacks completed
 echo 901 : AWS cloudformation create-stack
@@ -258,30 +271,6 @@ case "$SELECTION" in
   ;;
 
 
-"060" )
-  echo "===== AWS Lambda Get Account Settings:" $PROFILE
-  aws lambda get-account-settings \
-    --profile $PROFILE \
-    --output $OUTPUT
-  ;;
-
-
-"061" )
-  echo "===== AWS Lambda List Functions:" $PROFILE
-  aws lambda list-functions \
-    --profile $PROFILE \
-    --output $OUTPUT
-  ;;
-
-
-"062" )
-  echo "===== AWS Lambda List Layers:" $PROFILE
-  aws lambda list-layers \
-    --profile $PROFILE \
-    --output $OUTPUT
-  ;;
-
-
 "070" )
   echo "===== AWS Dynamo list-tables:" $PROFILE
   aws dynamodb list-tables \
@@ -294,9 +283,14 @@ case "$SELECTION" in
   echo "===== AWS Dynamo create-table:" $PROFILE
   aws dynamodb create-table \
     --table-name MusicCollection \
-    --attribute-definitions AttributeName=Artist,AttributeType=S AttributeName=SongTitle,AttributeType=S \
-    --key-schema AttributeName=Artist,KeyType=HASH AttributeName=SongTitle,KeyType=RANGE \
-    --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5 \
+    --attribute-definitions \
+      AttributeName=Artist,AttributeType=S \
+      AttributeName=SongTitle,AttributeType=S \
+    --key-schema \
+      AttributeName=Artist,KeyType=HASH \
+      AttributeName=SongTitle,KeyType=RANGE \
+    --provisioned-throughput \
+      ReadCapacityUnits=5,WriteCapacityUnits=5 \
     --profile $PROFILE \
     --output $OUTPUT
   ;;
@@ -306,6 +300,16 @@ case "$SELECTION" in
   echo "===== AWS Dynamo delete-table:" $PROFILE
   aws dynamodb delete-table \
     --table-name MusicCollection \
+    --profile $PROFILE \
+    --output $OUTPUT
+  ;;
+
+
+"073" )
+  echo "===== AWS Dynamo create-backup:" $PROFILE
+  aws dynamodb create-backup \
+    --table-name DeltaMergeMetadata \
+    --backup-name DMMDBackup \
     --profile $PROFILE \
     --output $OUTPUT
   ;;
@@ -340,6 +344,37 @@ case "$SELECTION" in
 
 
 "100" )
+  echo "===== AWS Lambda Get Account Settings:" $PROFILE
+  aws lambda get-account-settings \
+    --profile $PROFILE \
+    --output $OUTPUT
+  ;;
+
+
+"101" )
+  echo "===== AWS Lambda List Functions:" $PROFILE
+  aws lambda list-functions \
+    --profile $PROFILE \
+    --output $OUTPUT
+  ;;
+
+
+"102" )
+  echo "===== AWS Lambda List Layers:" $PROFILE
+  aws lambda list-layers \
+    --profile $PROFILE \
+    --output $OUTPUT
+  ;;
+
+"150" )
+  echo "===== AWS APIGATEWAY get-rest-apis:" $PROFILE
+  aws apigateway get-rest-apis \
+    --profile $PROFILE \
+    --output json
+  ;;
+
+
+"400" )
   echo "===== AWS EMR list-cluster:" $PROFILE
   aws emr list-clusters \
     --active \
@@ -348,7 +383,7 @@ case "$SELECTION" in
   ;;
 
 
-"101" )
+"401" )
   echo "===== AWS EMR list-instances:" $PROFILE
   aws emr list-instances \
     --cluster-id $EMR_CLUSTER_ID \
@@ -357,7 +392,7 @@ case "$SELECTION" in
   ;;
 
 
-"102" )
+"402" )
   echo "===== AWS EMR list-steps:" $PROFILE
   aws emr list-steps \
     --cluster-id $EMR_CLUSTER_ID \
@@ -366,7 +401,7 @@ case "$SELECTION" in
   ;;
 
 
-"103" )
+"403" )
   echo "===== AWS EMR describe-cluster:" $PROFILE
   aws emr describe-cluster \
     --cluster-id $EMR_CLUSTER_ID \
@@ -375,7 +410,7 @@ case "$SELECTION" in
   ;;
 
 
-"104" )
+"404" )
   echo "===== AWS EMR describe-steps:" $PROFILE
   aws emr describe-steps \
     --cluster-id $EMR_CLUSTER_ID \
@@ -383,8 +418,61 @@ case "$SELECTION" in
     --output table
   ;;
 
+"500" )
+  echo "===== AWS VPC describe-vpcs:" $PROFILE
+  aws ec2 describe-vpcs \
+    --profile $PROFILE \
+    --output table
+  ;;
 
-"110" )
+
+"501" )
+  echo "===== AWS VPC describe-subnets:" $PROFILE
+  aws ec2 describe-subnets \
+    --profile $PROFILE \
+    --output table
+  ;;
+
+
+"502" )
+  echo "===== AWS VPC describe-vpn-gateways:" $PROFILE
+  aws ec2 describe-vpn-gateways \
+    --profile $PROFILE \
+    --output table
+  ;;
+
+
+"503" )
+  echo "===== AWS VPC describe-nat-gateways:" $PROFILE
+  aws ec2 describe-nat-gateways \
+    --profile $PROFILE \
+    --output table
+  ;;
+
+
+"504" )
+  echo "===== AWS VPC describe-transit-gateways:" $PROFILE
+  aws ec2 describe-transit-gateways \
+    --profile $PROFILE \
+    --output table
+  ;;
+
+"505" )
+  echo "===== AWS VPC describe-route-tables:" $PROFILE
+  aws ec2 describe-route-tables \
+    --profile $PROFILE \
+    --output table
+  ;;
+
+"506" )
+  echo "===== AWS VPC describe-transit-gateways:" $PROFILE
+  aws ec2 describe-transit-gateways \
+    --profile $PROFILE \
+    --output table
+  ;;
+
+
+"610" )
   echo "===== AWS CLOUDWATCH List Metrics:" $PROFILE
   aws cloudwatch list-metrics \
     --namespace "AWS/Lambda" \
@@ -393,7 +481,7 @@ case "$SELECTION" in
   ;;
 
 
-"111" )
+"611" )
   echo "===== AWS CLOUDWATCH List Dashboards:" $PROFILE
   aws cloudwatch list-dashboards \
     --profile $PROFILE \
@@ -401,7 +489,7 @@ case "$SELECTION" in
   ;;
 
 
-"112" )
+"612" )
   echo "===== AWS CLOUDWATCH Describe Alarms:" $PROFILE
   aws cloudwatch describe-alarms \
     --profile $PROFILE \
@@ -409,7 +497,86 @@ case "$SELECTION" in
   ;;
 
 
-"200" )
+
+"630" )
+  echo "===== AWS CLOUDTRAIL List Trails:" $PROFILE
+  aws cloudwatch list-trails \
+    --profile $PROFILE \
+    --output text
+  ;;
+
+
+"700" )
+  echo "===== AWS cloudfront list-distributions:" $PROFILE
+  aws cloudfront list-distributions \
+    --profile $PROFILE \
+    --output table
+  ;;
+
+
+"900" )
+  echo "===== AWS cloudformation list-stacks - completed:" $PROFILE
+  aws cloudformation list-stacks \
+    --stack-status-filter CREATE_COMPLETE \
+    --profile $PROFILE \
+    --output table
+  ;;
+
+
+"901" )
+  echo "===== AWS cloudformation create-stack:" $PROFILE
+  aws cloudformation create-stack \
+    --stack-name terencetest \
+    --template-body file://cf/s3_bucket.yaml \
+    --profile $PROFILE \
+    --output table
+  ;;
+
+
+"902" )
+  echo "===== AWS cloudformation delete-stack:" $PROFILE
+  aws cloudformation delete-stack \
+    --stack-name terencetest \
+    --profile $PROFILE \
+    --output table
+  ;;
+
+
+"410" )
+  echo "===== AWS CLOUDWATCH List Metrics:" $PROFILE
+  aws cloudwatch list-metrics \
+    --namespace "AWS/Lambda" \
+    --profile $PROFILE \
+    --output text
+  ;;
+
+
+"411" )
+  echo "===== AWS CLOUDWATCH List Dashboards:" $PROFILE
+  aws cloudwatch list-dashboards \
+    --profile $PROFILE \
+    --output table
+  ;;
+
+
+"412" )
+  echo "===== AWS CLOUDWATCH Describe Alarms:" $PROFILE
+  aws cloudwatch describe-alarms \
+    --profile $PROFILE \
+    --output table
+  ;;
+
+
+
+"430" )
+  echo "===== AWS CLOUDTRAIL List Trails:" $PROFILE
+  aws cloudwatch list-trails \
+    --profile $PROFILE \
+    --output text
+  ;;
+
+
+"500" )
   echo "===== AWS cloudfront list-distributions:" $PROFILE
   aws cloudfront list-distributions \
     --profile $PROFILE \
@@ -451,11 +618,14 @@ case "$SELECTION" in
   echo ESC1
   exit 0
   ;;
+
+
 # Attempt to cater for ESC
 "^[" )
   echo ESC2
   exit 0
   ;;
+
 # ------------------------------------------------
 #  GIT
 # ------------------------------------------------
