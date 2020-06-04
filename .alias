@@ -1,5 +1,6 @@
 #  .alias for bash platforms
 
+alias e="vi"
 alias ll="ls -alGFh --color=auto"
 alias md="mkdir"
 alias rd="rmdir"
