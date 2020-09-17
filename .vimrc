@@ -21,9 +21,29 @@ function! UseSpaces()
   set smarttab      " Inserts blanks on a <Tab> key (as per sw, ts and sts).
 endfunction
 
+function! UseVisuals()
+  set ruler
+  set showcmd
+  set nu
+  hi CursorLine cterm=NONE ctermbg=NONE ctermfg=white guibg=darkred guifg=white
+  set cursorline
+  hi CursorColumn cterm=NONE ctermbg=blue ctermfg=white guibg=darkred guifg=white
+  set cursorcolumn
+  set visualbell
+endfunction
+
+function! EnableSearch()
+  set incsearch
+  set hlsearch
+  set ignorecase
+  set smartcase
+  hi Search cterm=NONE ctermfg=black ctermbg=white
+endfunction
+
 
 call UseTabs()
-
+call UseVisuals()
+call EnableSearch()
 
 
 
