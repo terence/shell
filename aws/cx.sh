@@ -49,13 +49,17 @@ echo 100 : AWS Lambda Account Settings
 echo 101 : AWS Lambda List Functions
 echo 102 : AWS Lambda List Layers
 echo ----------------------------------------------
-echo 150 : AWS APIGATEWAY get-rest-apis
-echo 151 : AWS APIGATEWAY xxx
-echo 152 : AWS APIGATEWAY xxx
+echo 150 : AWS STEPFUNCTIONS describe-actiivity
+echo 151 : AWS STEPFUNCTIONS xxx
+echo 152 : AWS STEPFUNCTIONS xxx
 echo ----------------------------------------------
-echo 150 : AWS DataPipeline list-pipelines
-echo 151 : AWS DataPipeline xxx
-echo 152 : AWS DataPipeline xxx
+echo 200 : AWS APIGATEWAY get-rest-apis
+echo 201 : AWS APIGATEWAY xxx
+echo 202 : AWS APIGATEWAY xxx
+echo ----------------------------------------------
+echo 300 : AWS DataPipeline list-pipelines
+echo 301 : AWS DataPipeline xxx
+echo 302 : AWS DataPipeline xxx
 echo ----------------------------------------------
 echo 400 : AWS EMR list-cluster
 echo 401 : AWS EMR list-instances
