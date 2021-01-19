@@ -21,7 +21,6 @@ function! UseVisuals()
   set ruler
   set number
   set showcmd
-  # set showmatch
   set nu
   hi CursorLine cterm=NONE ctermbg=NONE ctermfg=white guibg=darkred guifg=white
   set cursorline
