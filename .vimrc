@@ -1,9 +1,5 @@
 filetype plugin indent on
 syntax on
-set hlsearch
-set errorbells
-set visualbell
-
 
 function! UseTabs()
   set tabstop=2     " Size of a hard tabstop (ts).
@@ -23,13 +19,16 @@ endfunction
 
 function! UseVisuals()
   set ruler
+  set number
   set showcmd
+  # set showmatch
   set nu
   hi CursorLine cterm=NONE ctermbg=NONE ctermfg=white guibg=darkred guifg=white
   set cursorline
   hi CursorColumn cterm=NONE ctermbg=blue ctermfg=white guibg=darkred guifg=white
   set cursorcolumn
   set visualbell
+  set errorbells
 endfunction
 
 function! EnableSearch()
