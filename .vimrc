@@ -24,7 +24,7 @@ function! UseVisuals()
   set nu
   hi CursorLine cterm=NONE ctermbg=NONE ctermfg=white guibg=darkred guifg=white
   set cursorline
-  hi CursorColumn cterm=NONE ctermbg=blue ctermfg=white guibg=darkred guifg=white
+  hi CursorColumn cterm=NONE ctermbg=darkgrey ctermfg=white guibg=darkred guifg=white
   set cursorcolumn
   set visualbell
   set errorbells
