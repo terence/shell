@@ -1,6 +1,6 @@
 #!/bin/bash
 #================================================================
-# Command-line Assistant - cx.sh                                                                       
+# Command-line Assistant - cx.sh
 #================================================================
 clear
 source ./vars.sh
