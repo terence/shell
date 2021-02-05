@@ -54,8 +54,6 @@ case "$SELECTION" in
   dscl . list /Users | grep -v '_'
   echo "fdesetup user list"
 	sudo fdesetup list
-
-
 	;;
 
 
@@ -79,6 +77,7 @@ case "$SELECTION" in
   echo ===========================================================
   echo Delete User
   echo ===========================================================
+   echo "bob deleted using sysadminctl"
   sudo sysadminctl -deleteUser bob
 
   # echo "bob deleted"
@@ -92,7 +91,9 @@ case "$SELECTION" in
   echo ===========================================================
   echo Manage screentime
   echo ===========================================================
-  ;;
+  # Currently no mechanisms to manage screentime programmatically on MacOS.
+
+	;;
  
 
    * )
